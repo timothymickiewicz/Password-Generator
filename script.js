@@ -10,45 +10,31 @@ function writePassword() {
   passwordText.value = password;
 
 }
-// Creating a shuffle for randomizing which character array is selected
-// function shuffle(array) {
-//   array = array[Math.floor(Math.random() * array.length)];
-// }
-function shuffle(sourceArray) {
-  for (var i = 0; i < sourceArray.length - 1; i++) {
-      var j = i + Math.floor(Math.random() * (sourceArray.length - i));
-
-      var temp = sourceArray[j];
-      sourceArray[j] = sourceArray[i];
-      sourceArray[i] = temp;
-  }
-  return sourceArray;
-}
 
 // Generates password
 function generatePassword() {
-  var i = ""
   // User decision inputs
   var charCount = prompt("How many characters do you want in your password? Please enter a number between 8 and 128 characters.");
   var lowerCase= confirm("Do you want lower case letters included?")
   var upperCase = confirm("Do you want upper case letters included?");
   var numbers = confirm("Do you want numbers included?")
   var specialCharacters = confirm("Do you want special characters included?");
-// Establishing variables as fall-backs for when user selects "cancel"
+  // Establishing variables as fall-backs for when user selects "cancel"
   var lowerCaseValue = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"];
   var upperCaseValue = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"];
   var numbersValue = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"];
   var specialCharactersValue = ["!", "@", "#", "$", "%", "^", "&", "*", "(", ")", "_", "-", "+", "=", "{", "[", "}", "]", ":", ";", "'", "<", ">", "?", "/", "`", "~"];
   var completedPassword = "";
+  var i = "";
   
-// User input determining length of password, converted to a number format variable if it is in range
+  // User input determining length of password, converted to a number format variable if it is in range
   if (charCount >=8 && charCount <=128) {
     var charCountValue = parseInt(charCount);
   }
   else {
-    alert("Aborted due to out of range characters (8 through 128), or user cancelation. Please try again.")
+    alert("Aborted due to out of range characters (8 through 128), or user cancelation. Please try again.");
   }
-// Lower case value based on user confirm input
+  // Lower case value based on user confirm input
   if (lowerCase === true) {
     lowerCaseValue = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"];
   }
@@ -74,7 +60,7 @@ function generatePassword() {
   else if (upperCase === false && specialCharacters === true) {
     upperCaseValue = specialCharactersValue;
   }
-// Numbers values based on user confirm input
+  // Numbers values based on user confirm input
   if (numbers === true) {
     numbersValue = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"];
   }
@@ -87,7 +73,7 @@ function generatePassword() {
   else if (numbers === false && specialCharacters === true) {
     numbersValue = specialCharactersValue;
   }
-// Special Characters values based on user confirm input
+  // Special Characters values based on user confirm input
   if (specialCharacters === true) {
     specialCharactersValue = ["!", "@", "#", "$", "%", "^", "&", "*", "(", ")", "_", "-", "+", "=", "{", "[", "}", "]", ":", ";", "'", "<", ">", "?", "/", "`", "~"];
   }
@@ -100,7 +86,7 @@ function generatePassword() {
   else if (specialCharacters === false && numbers === true) {
     specialCharactersValue = numbersValue;
   }
-
+  // If user selects none of the character options they get message and can try again
   if (lowerCase === false && numbers === false && upperCase === false && specialCharacters === false) {
     alert("You must select at least one character option. Please try again.");
     completedPassword = "Try Again."
@@ -114,8 +100,7 @@ function generatePassword() {
   }
  
 
-// Putting password together by randomizing a selection from each array until user input length is reached
-
+  // Putting password together by randomizing a selection from each array until user input length is reached
   for (i = 0; i <= charCountValue; i++) {
     checkPasswordLength:
     while (completedPassword.length < charCountValue_toLength.length) {
@@ -165,6 +150,19 @@ function generatePassword() {
     console.log(upperCaseValue, numbersValue, specialCharactersValue, charCountValue);
     console.log(charCountValue_toLength);
     console.log(getCharacterLength(charCountValue_toLength));
+    // shuffling my completedPassword just for good measure, taken from https://stackoverflow.com/questions/3943772/how-do-i-shuffle-the-characters-in-a-string-in-javascript
+    String.prototype.shuffle = function () {
+      var completedPassword = this.split(""),
+          n = completedPassword.length;
+  
+      for(var i = n - 1; i > 0; i--) {
+          var j = Math.floor(Math.random() * (i + 1));
+          var tmp = completedPassword[i];
+          completedPassword[i] = completedPassword[j];
+          completedPassword[j] = tmp;
+      }
+      return completedPassword.join("");
+  }
     return completedPassword;
   }
 } 
