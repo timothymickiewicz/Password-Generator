@@ -163,7 +163,7 @@ function generatePassword() {
       }
       return completedPassword.join("");
   }
-    return completedPassword;
+    return completedPassword.shuffle();
   }
 } 
 // Add event listener to generate button
