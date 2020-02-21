@@ -30,6 +30,7 @@ function generatePassword() {
   var i = ""
   // User decision inputs
   var charCount = prompt("How many characters do you want in your password? Please enter a number between 8 and 128 characters.");
+  var lowerCase= confirm("Do you want lower case letters included?")
   var upperCase = confirm("Do you want upper case letters included?");
   var numbers = confirm("Do you want numbers included?")
   var specialCharacters = confirm("Do you want special characters included?");
@@ -43,26 +44,32 @@ function generatePassword() {
     alert("Aborted due to out of range characters (8 through 128), or user cancelation. Please try again.")
   }
 // Upper/Lower case values based on user confirm input
-  if (upperCase === true) {
-  upperCaseValue = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"];
+  if (lowerCase === true) {
+    lowerCaseValue = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"];
   }
   else {
-  upperCaseValue = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"];
+    lowerCaseValue = void(0);
+  }
+  if (upperCase === true) {
+    upperCaseValue = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"];
+  }
+  else {
+    upperCaseValue = void(0);
   } 
 // Numbers values based on user confirm input
   if (numbers === true) {
-  numbersValue = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"];
+    numbersValue = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"];
   }
   else {
-  numbersValue = null;
+    numbersValue = void(0);
   }
 // Special Characters values based on user confirm input
   if (specialCharacters === true) {
-  specialCharactersValue = ["!", "@", "#", "$", "%", "^", "&", "*", "(", ")", "_", "-", "+", "=", "{", "[", "}", "]", ":", ";", "'", "<", ">", "?", "/", "`", "~"];
+    specialCharactersValue = ["!", "@", "#", "$", "%", "^", "&", "*", "(", ")", "_", "-", "+", "=", "{", "[", "}", "]", ":", ";", "'", "<", ">", "?", "/", "`", "~"];
   }
-  // else {
-  // specialCharactersValue = void(0);
-  // }
+  else {
+    specialCharactersValue = void(0);
+  }
   
   // Establishing an array of user input arrays
   var collectiveValues = [
@@ -80,12 +87,14 @@ function generatePassword() {
  
 
 // Putting password together by randomizing which array is picked, and then randomizing the selection from each array until length is reached
-  for (i = 0; i < charCountValue; i++) {
+  for (i = 0; i <= charCountValue; i++) {
     var completedPassword = "";
     checkPasswordLength:
-    while (completedPassword.length <= charCountValue_toLength.length) {
+    while (completedPassword.length < charCountValue_toLength.length) {
 
-      shuffle(collectiveValues);
+        var randomizeLowerCaseValue = lowerCaseValue[Math.floor(Math.random() * lowerCaseValue.length)];
+  
+          var completedPassword = completedPassword.concat(randomizeLowerCaseValue);
 
         var randomizeUpperCaseValue = upperCaseValue[Math.floor(Math.random() * upperCaseValue.length)];
   
@@ -103,16 +112,20 @@ function generatePassword() {
           continue checkPasswordLength;
         }
     }
+// if (completedPassword.length = charCountValue_toLength.length) {
+//   break
+// }
+// maybe move var completedPassword outside of loop
+
     // used to log the character length in relation to what it should be based off of what the user entered
     function getCharacterLength (str) {
       return [...str].length;
     }
     console.log(getCharacterLength(completedPassword));
+    console.log(completedPassword);
     console.log(randomizeUpperCaseValue, randomizeNumbers, randomizeSpecialCharacters);
     console.log(upperCaseValue, numbersValue, specialCharactersValue, charCountValue);
     console.log(collectiveValues);
-    console.log(charCountValue_toLength);
-    console.log(completedPassword);
     console.log(charCountValue_toLength);
     console.log(getCharacterLength(charCountValue_toLength));
     return completedPassword;
