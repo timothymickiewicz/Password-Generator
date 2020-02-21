@@ -36,7 +36,7 @@ function generatePassword() {
   var specialCharacters = confirm("Do you want special characters included?");
 
   
-// User input determining length of password, converted to number format if in range
+// User input determining length of password, converted to a number format variable if in range
   if (charCount >=8 && charCount <=128) {
     var charCountValue = parseInt(charCount);
   }
@@ -78,7 +78,7 @@ function generatePassword() {
     (specialCharactersValue),
   ]
 
-  // Concatenating the digits in charCount to have a string length of charCountValue for generator function to know when to end
+  // Concatenating the input from charCount to have a new variable with a string length that has a number of digits that is equal to the number in charCountValue for password generator function to have a comparable string length to know when to end 
   var str1 = "1";
   var charCountValue_toLength = "";
   for (j=0; j < charCountValue; j++) {
@@ -87,8 +87,8 @@ function generatePassword() {
  
 
 // Putting password together by randomizing which array is picked, and then randomizing the selection from each array until length is reached
+var completedPassword = "";
   for (i = 0; i <= charCountValue; i++) {
-    var completedPassword = "";
     checkPasswordLength:
     while (completedPassword.length < charCountValue_toLength.length) {
 
@@ -96,13 +96,25 @@ function generatePassword() {
   
           var completedPassword = completedPassword.concat(randomizeLowerCaseValue);
 
+        if (completedPassword.length == charCountValue_toLength.length) {
+          break;
+        }
+
         var randomizeUpperCaseValue = upperCaseValue[Math.floor(Math.random() * upperCaseValue.length)];
   
           var completedPassword = completedPassword.concat(randomizeUpperCaseValue);
+
+        if (completedPassword.length == charCountValue_toLength.length) {
+          break;
+        }
   
         var randomizeNumbers = numbersValue[Math.floor(Math.random() * numbersValue.length)];
   
           var completedPassword = completedPassword.concat(randomizeNumbers);
+
+        if (completedPassword.length == charCountValue_toLength.length) {
+          break;
+        }
   
         var randomizeSpecialCharacters = specialCharactersValue[Math.floor(Math.random() * specialCharactersValue.length)];
   
@@ -111,11 +123,10 @@ function generatePassword() {
         if (completedPassword.length !== charCountValue_toLength.length) {
           continue checkPasswordLength;
         }
+        else {
+          break;
+        }
     }
-// if (completedPassword.length = charCountValue_toLength.length) {
-//   break
-// }
-// maybe move var completedPassword outside of loop
 
     // used to log the character length in relation to what it should be based off of what the user entered
     function getCharacterLength (str) {
