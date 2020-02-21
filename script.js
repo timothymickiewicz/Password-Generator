@@ -11,8 +11,18 @@ function writePassword() {
 
 }
 // Creating a shuffle for randomizing which character array is selected
-function shuffle(array) {
-  array.sort(() => Math.random() - 0.5);
+// function shuffle(array) {
+//   array = array[Math.floor(Math.random() * array.length)];
+// }
+function shuffle(sourceArray) {
+  for (var i = 0; i < sourceArray.length - 1; i++) {
+      var j = i + Math.floor(Math.random() * (sourceArray.length - i));
+
+      var temp = sourceArray[j];
+      sourceArray[j] = sourceArray[i];
+      sourceArray[i] = temp;
+  }
+  return sourceArray;
 }
 
 // Generates password
@@ -44,37 +54,33 @@ function generatePassword() {
   numbersValue = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"];
   }
   else {
-  numbersValue = void(0);
+  numbersValue = null;
   }
 // Special Characters values based on user confirm input
   if (specialCharacters === true) {
   specialCharactersValue = ["!", "@", "#", "$", "%", "^", "&", "*", "(", ")", "_", "-", "+", "=", "{", "[", "}", "]", ":", ";", "'", "<", ">", "?", "/", "`", "~"];
   }
-  else {
-  specialCharactersValue = void(0);
-  }
-
-  // Establishing an array of arrays
+  // else {
+  // specialCharactersValue = void(0);
+  // }
+  
+  // Establishing an array of user input arrays
   var collectiveValues = [
     (upperCaseValue),
     (numbersValue),
     (specialCharactersValue),
   ]
 
-  // Counting the digits in charCountValue to have a string length for generator function to know when to end
-  var charCountValue_toLength = charCountValue.toPrecision(charCountValue);
+  // Concatenating the digits in charCount to have a string length of charCountValue for generator function to know when to end
+  var str1 = "1";
+  var charCountValue_toLength = "";
+  for (j=0; j < charCountValue; j++) {
+    charCountValue_toLength = charCountValue_toLength.concat(str1);
+  }
+ 
 
-  if (charCountValue_toLength >=100) {
-    charCountValue_toLength = charCountValue_toLength.substring(0, (charCountValue_toLength -3));
-  }
-  else if (charCountValue_toLength >= 10) {
-    charCountValue_toLength = charCountValue_toLength.slice(0, (charCountValue_toLength -2));
-  }
-  else if (charCountValue_toLength < 10) {
-    charCountValue_toLength = charCountValue_toLength.slice(2, charCountValue);
-  }
 // Putting password together by randomizing which array is picked, and then randomizing the selection from each array until length is reached
-  for (i = 0; i < charCountValue_toLength.length; i++) {
+  for (i = 0; i < charCountValue; i++) {
     var completedPassword = "";
     checkPasswordLength:
     while (completedPassword.length <= charCountValue_toLength.length) {
@@ -107,6 +113,8 @@ function generatePassword() {
     console.log(collectiveValues);
     console.log(charCountValue_toLength);
     console.log(completedPassword);
+    console.log(charCountValue_toLength);
+    console.log(getCharacterLength(charCountValue_toLength));
     return completedPassword;
   }
 } 
