@@ -34,51 +34,79 @@ function generatePassword() {
   var upperCase = confirm("Do you want upper case letters included?");
   var numbers = confirm("Do you want numbers included?")
   var specialCharacters = confirm("Do you want special characters included?");
-
+// Establishing variables as fall-backs for when user selects "cancel"
+  var lowerCaseValue = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"];
+  var upperCaseValue = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"];
+  var numbersValue = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"];
+  var specialCharactersValue = ["!", "@", "#", "$", "%", "^", "&", "*", "(", ")", "_", "-", "+", "=", "{", "[", "}", "]", ":", ";", "'", "<", ">", "?", "/", "`", "~"];
+  var completedPassword = "";
   
-// User input determining length of password, converted to a number format variable if in range
+// User input determining length of password, converted to a number format variable if it is in range
   if (charCount >=8 && charCount <=128) {
     var charCountValue = parseInt(charCount);
   }
   else {
     alert("Aborted due to out of range characters (8 through 128), or user cancelation. Please try again.")
   }
-// Upper/Lower case values based on user confirm input
+// Lower case value based on user confirm input
   if (lowerCase === true) {
     lowerCaseValue = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"];
   }
-  else {
-    lowerCaseValue = void(0);
+  else if (lowerCase === false && upperCase === true) {
+    lowerCaseValue = upperCaseValue;
   }
+  else if (lowerCase === false && numbers === true) {
+    lowerCaseValue = numbersValue;
+  }
+  else if (lowerCase === false && specialCharacters === true) {
+    lowerCaseValue = specialCharactersValue;
+  }
+  // Upper case value based on user confirm input
   if (upperCase === true) {
     upperCaseValue = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"];
   }
-  else {
-    upperCaseValue = void(0);
-  } 
+  else if (upperCase === false && lowerCase === true) {
+    upperCaseValue = lowerCaseValue;
+  }
+  else if (upperCase === false && numbers === true) {
+    upperCaseValue = numbersValue;
+  }
+  else if (upperCase === false && specialCharacters === true) {
+    upperCaseValue = specialCharactersValue;
+  }
 // Numbers values based on user confirm input
   if (numbers === true) {
     numbersValue = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"];
   }
-  else {
-    numbersValue = void(0);
+  else if (numbers === false && lowerCase === true) {
+    numbersValue = lowerCaseValue;
+  }
+  else if (numbers === false && upperCase === true) {
+    numbersValue = upperCaseValue;
+  }
+  else if (numbers === false && specialCharacters === true) {
+    numbersValue = specialCharactersValue;
   }
 // Special Characters values based on user confirm input
   if (specialCharacters === true) {
     specialCharactersValue = ["!", "@", "#", "$", "%", "^", "&", "*", "(", ")", "_", "-", "+", "=", "{", "[", "}", "]", ":", ";", "'", "<", ">", "?", "/", "`", "~"];
   }
-  else {
-    specialCharactersValue = void(0);
+  else if (specialCharacters === false && lowerCase === true) {
+    specialCharactersValue = lowerCaseValue;
   }
-  
-  // Establishing an array of user input arrays
-  var collectiveValues = [
-    (upperCaseValue),
-    (numbersValue),
-    (specialCharactersValue),
-  ]
+  else if (specialCharacters === false && upperCase === true) {
+    specialCharactersValue = upperCaseValue;
+  }
+  else if (specialCharacters === false && numbers === true) {
+    specialCharactersValue = numbersValue;
+  }
 
-  // Concatenating the input from charCount to have a new variable with a string length that has a number of digits that is equal to the number in charCountValue for password generator function to have a comparable string length to know when to end 
+  if (lowerCase === false && numbers === false && upperCase === false && specialCharacters === false) {
+    alert("You must select at least one character option. Please try again.");
+    completedPassword = "Try Again."
+  }
+
+  // Concatenating the input from charCount to have a new variable with a string length that has a number of digits that is equal to the number in charCountValue for password generator function to have a comparable string length to know when to break loop 
   var str1 = "1";
   var charCountValue_toLength = "";
   for (j=0; j < charCountValue; j++) {
@@ -86,8 +114,8 @@ function generatePassword() {
   }
  
 
-// Putting password together by randomizing which array is picked, and then randomizing the selection from each array until length is reached
-var completedPassword = "";
+// Putting password together by randomizing a selection from each array until user input length is reached
+
   for (i = 0; i <= charCountValue; i++) {
     checkPasswordLength:
     while (completedPassword.length < charCountValue_toLength.length) {
@@ -127,8 +155,7 @@ var completedPassword = "";
           break;
         }
     }
-
-    // used to log the character length in relation to what it should be based off of what the user entered
+    // used to log character lengths for troubleshooting
     function getCharacterLength (str) {
       return [...str].length;
     }
@@ -136,7 +163,6 @@ var completedPassword = "";
     console.log(completedPassword);
     console.log(randomizeUpperCaseValue, randomizeNumbers, randomizeSpecialCharacters);
     console.log(upperCaseValue, numbersValue, specialCharactersValue, charCountValue);
-    console.log(collectiveValues);
     console.log(charCountValue_toLength);
     console.log(getCharacterLength(charCountValue_toLength));
     return completedPassword;
